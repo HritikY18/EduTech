@@ -46,8 +46,7 @@ class PaymentController extends Controller
             'amount'=>$request->amount,
             'course_id'=>$id
         ]);
-        session()->flash('success','Payment Successfull!');
-        return redirect()->route('student.index');
+        return redirect(route('student.index'))->with('success','Payment Successfull!');
     }
 
     /**
@@ -83,14 +82,14 @@ class PaymentController extends Controller
     {
         $action = $request->query('action'); 
         if ($action === 'accept') {
-        $payment->update(['payment_status'=>'approved']);
-        session()->flash('success','Payment Request approved');
+            $payment->update(['payment_status'=>'approved']);
+            return redirect(route('teacher.index'))->with('success','Payment Request approved');
         } 
         elseif ($action === 'decline') {
             $payment->update(['payment_status'=>'declined']);
-            session()->flash('success','Payment Request approved');
+            return redirect(route('teacher.index'))->with('danger','Payment Request declined');
         }
-        return redirect()->route('teacher.index');
+
     }
 
     /**

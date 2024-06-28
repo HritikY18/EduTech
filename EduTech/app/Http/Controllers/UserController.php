@@ -103,8 +103,7 @@ class UserController extends Controller
             $user->address = $request->input('address');
             $user->save();
         }
-        session()->flash('profile-updated',"Profile Upadated Successfully!");
-        return view('user.edit',['user'=>$user]);
+        return redirect(route("$user->role.index"))->with('success',"Profile Upadated Successfully!");
     }
 
     public function changePassword($id)
@@ -117,13 +116,14 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         if (Hash::check($request->currentPassword, $user->password))  {
                     $user->password = Hash::make($request->input('password'));
-                    session()->flash('password-changed','Password Changed Successfully!');
                     $user->save();
+                    return redirect(route("$user->role.index"))->with('success','Password Changed Successfully!');
             }
             else{
-                session()->flash('password-not-matched','Password not matched!');
+                // session()->flash('password-not-matched','Password not matched!');
+                return redirect(route('user.changePassword',$user))->with('password-not-matched','Password not matched!');
             }
-            return redirect()->route('user.changePassword',$user);
+            
     }
 
     /**

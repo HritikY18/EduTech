@@ -10,11 +10,6 @@
 
 
 <div class="container">
-    @if(session('profile-updated'))
-        <div class="alert alert-success">
-            {{ session('profile-updated') }}
-        </div>
-    @endif  
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

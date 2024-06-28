@@ -95,8 +95,7 @@ class TeacherController extends Controller
     {
         if($request->ajax())
         {
-            $user_id = auth()->user()->id;
-            $courses = Course::where('user_id',$user_id)->get();
+            $courses = Course::where('user_id',auth()->user()->id)->get();
             // $courses = auth()->user()->courses()->get();
 
             return DataTables::of($courses)
@@ -122,8 +121,7 @@ class TeacherController extends Controller
     {
         if($request->ajax())
         {
-            $user_id = auth()->user()->id;
-            $users = User::whereHas('enrolls', function ($query) use ($user_id,$id) {
+            $users = User::whereHas('enrolls', function ($query) use ($id) {
               $query->where('course_id', $id);
           });
           return DataTables::of($users)
@@ -146,14 +144,12 @@ class TeacherController extends Controller
         return view('teacher.paymentRequests');
     }
    
-    public function getPaymentRequest(){
-        $user_id = auth()->user()->id;
-        $payments = Payment::whereHas('course',function($query) use($user_id){
-            $query->where('user_id',$user_id);
+    public function getPaymentRequests(){
+        $payments = Payment::whereHas('course',function($query) {
+            $query->where('user_id',auth()->user()->id);
         })
         ->where('payment_status','pending')
-        ->with('course','user')
-        ->get();
+        ->with('course','user');
 
         return DataTables::of($payments)
         ->addColumn('profile',function($payment){
@@ -170,17 +166,5 @@ class TeacherController extends Controller
           ->make(true);
     }
 
-    public function temp(){
-        $user_id = auth()->user()->id;
-        $payments = Payment::whereHas('course',function($query) use($user_id){
-            $query->where('user_id',$user_id);
-        })
-        ->with('course','user')
-        ->get();
-        
-        foreach($payments as $payment)
-        {
-            dd($payment->user->profile);
-        }
-    }
+   
 }

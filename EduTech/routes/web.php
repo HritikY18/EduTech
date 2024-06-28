@@ -7,17 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PaymentController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\CertificateController;
 
 Route::get('/', function () {
     // return Auth::user()->role;
@@ -46,7 +36,9 @@ Route::prefix('teacher/')->name('teacher.')->group(function () {
     Route::get('courseStudents/{id}',[TeacherController::class,'getCourseStudents'])->name('getCourseStudents');
     Route::get('comments/{id}',[TeacherController::class,'comments'])->name('comments');
     Route::get('paymentRequests',[TeacherController::class,'paymentRequests'])->name('paymentRequests');
-    Route::get('getPaymentRequests',[TeacherController::class,'getPaymentRequest'])->name('getPaymentRequests');
+    Route::get('getPaymentRequests',[TeacherController::class,'getPaymentRequests'])->name('getPaymentRequests');
+    Route::get('certificateRequests',[CertificateController::class,'certificateRequests'])->name('certificateRequests');
+    Route::get('getCertificateRequests',[CertificateController::class,'getCertificateRequests'])->name('getCertificateRequests');
 });
 Route::resource('teacher',TeacherController::class);
 
@@ -55,8 +47,9 @@ Route::prefix('student/')->name('student.')->group(function () {
     // Route::resource('/',StudentController::class);
     Route::get('getCourses',[StudentController::class,'getCourses'])->name('getCourses');
     Route::get('coursemates/{id}',[StudentController::class,'getCoursemates'])->name('getCoursemates');
+    Route::get('applyForCertificate/{enroll}',[CertificateController::class,'applyForCertificate'])->name('applyForCertificate');
 });
-Route::get('/temp',[TeacherController::class,'temp'])->name('temp');
+Route::get('/temp',[StudentController::class,'temp'])->name('temp');
 Route::resource('student',StudentController::class);
 
 

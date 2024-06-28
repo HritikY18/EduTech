@@ -6,16 +6,11 @@
 {{-- <x-teacher-master> --}}
     @section('content')
     <div class="container">
-      @if(session('password-changed'))
-          <div class="alert alert-success">
-              {{ session('password-changed') }}
-          </div>
-      @endif  
-      @if(session('password-not-matched'))
-      <div class="alert alert-danger">
-          {{ session('password-not-matched') }}
-      </div>
-  @endif  
+        @if(session('password-not-matched'))
+            <div class="alert alert-danger">
+                {{ session('password-not-matched') }}
+            </div>
+        @endif  
       <div class="row justify-content-center">
           <div class="col-md-8">
               <div class="card">

@@ -1,0 +1,1 @@
+<a href="{{route('teacher.index')}}" class="btn btn-primary btn-sm">Upload</a>

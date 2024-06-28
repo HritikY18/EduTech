@@ -75,7 +75,7 @@ class EnrollController extends Controller
      */
     public function edit(Enroll $enroll)
     {
-        //
+        return view('student.startCourse',['enroll'=>$enroll]);
     }
 
     /**
@@ -87,7 +87,15 @@ class EnrollController extends Controller
      */
     public function update(Request $request, Enroll $enroll)
     {
-        //
+        if($request->progress == 100)
+        {
+            $enroll->update(['progress'=>$request->progress,'status'=>'completed']);
+            return redirect(route('student.index'))->with('success',"Congratulations you have completed ".$enroll->course->name." course");
+        }
+        else{
+            $enroll->update(['progress'=>$request->progress]);
+            return redirect(route('student.index'))->with('success',"Course progress updated to $request->progress");
+        }
     }
 
     /**

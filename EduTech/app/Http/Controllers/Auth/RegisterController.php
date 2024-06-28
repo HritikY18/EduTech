@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon; 
 
 class RegisterController extends Controller
 {
@@ -61,6 +62,8 @@ class RegisterController extends Controller
             'address' => ['required', 'string', 'max:255'],
         ]);
     }
+
+    
 
     /**
      * Create a new user instance after a valid registration.

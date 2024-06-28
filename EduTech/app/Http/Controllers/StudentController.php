@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Enroll;
 use App\Models\Comment;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\DB;  
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
 class StudentController extends Controller
@@ -57,14 +57,8 @@ class StudentController extends Controller
     public function show($id)
     {
         // this function  show the coursemates to student
-        //$id is course it 
+        //$id is course id
         return view('student.coursemates',['course_id'=>$id]);
-        // $user_id = auth()->user()->id;
-        // $users = User::whereHas('enrolls', function ($query) use ($user_id,$id) {
-        //     $query->where('course_id', $id);
-        //     $query->whereNot('user_id', $user_id);
-        // })->get();
-        // dd($users);
     }
 
     /**
@@ -105,16 +99,15 @@ class StudentController extends Controller
     {
         if($request->ajax())
         {
-            // return DataTables::of(Course::all())->toJson();
-            // return DataTables::of(Course::query())->toJson();
-            $id = auth()->user()->id;
-            $courses = Course::whereHas('enrolls', function ($query) use ($id) {
-                $query->where('user_id', $id);
-            })->with('user','enrolls')->get();
-            
+
+            $courses = Course::whereHas('enrolls', function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })->with('user','enrolls');
+
+
             return DataTables::of($courses)
             ->addColumn('image', function ($course) {
-                return '<img src="'.$course->image.'" border="0" width="100" class="img-rounded" align="center" />';
+                return '<img src="'.$course->image.'" border="0" width="80" height="80" class="img-rounded" align="center" />';
             })
             // ->addColumn('actions','student.actions')//view
             ->addColumn('actions', function ($course) {
@@ -128,11 +121,11 @@ class StudentController extends Controller
     {
         if($request->ajax())
         {
-            $user_id = auth()->user()->id;
-            $users = User::whereHas('enrolls', function ($query) use ($user_id,$id) {
+            $users = User::whereHas('enrolls', function ($query) use ($id) {
               $query->where('course_id', $id);
-              $query->whereNot('user_id', $user_id);
+              $query->whereNot('user_id', auth()->user()->id);
           });
+
           return DataTables::of($users)
           ->addColumn('profile',function($user){
             return '<img src="'.$user->profile.'" border="0" width="100" class="img-rounded" align="center" />';
@@ -141,6 +134,39 @@ class StudentController extends Controller
           ->make(true);
         }
     }
+
+
+
+    public function temp()
+{
+    // $courses = Course::whereHas('enrolls', function ($query) {
+    //         $query->where('user_id', auth()->user()->id);
+    //     })
+    //     ->with(['user', 'enrolls', 'payments' => function ($query) {
+    //         $query->where('payment_status', 'pending');
+    //     }])
+    //     ->get();
+
+    // dd($courses->toSql());
+
+    // $query = Course::whereHas('enrolls', function ($query) {
+    //     $query->where('user_id', auth()->user()->id);
+    // })
+    // ->with('user')
+    // ->with(['payments' => function ($query) {
+    //     $query->where('payment_status', 'approved');
+    // }])->get();
+
+    // $data = Enroll::with('course','user')->where('status','requested')->get();
+    $enrolls = Enroll::whereHas('course',function($query) {
+        $query->where('user_id',auth()->user()->id);
+    })
+    ->where('status','requested')
+    ->with('course','user')->get();
+    dd($enrolls);
+
+}
+
 
 
 }

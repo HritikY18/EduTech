@@ -43,8 +43,7 @@ class CommentController extends Controller
             'course_id' => $id,
             'comment_text'=> $request->comment
           ]);
-          session()->flash('success','Comment added successfully!');
-          return redirect()->route('student.index');
+          return redirect(route('student.index'))->with('success','Comment added successfully!');
     }
 
     /**
