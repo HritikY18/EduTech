@@ -17,7 +17,7 @@
                   <div class="card-header">{{ __('ChangePassword') }}</div>
   
                   <div class="card-body">
-                      <form method="POST" action="{{ route('user.changePasswordStore',$user) }}" enctype="multipart/form-data">
+                      <form method="POST" action="{{ route('user.changePasswordStore') }}" enctype="multipart/form-data">
                           @csrf
                           @method('PATCH')
                           {{-- currentPassword --}}
@@ -75,9 +75,9 @@
   </div>
     @endsection
 {{-- </x-teacher-master> --}}
-@if($user->role == 'teacher')
+@if(auth()->user()->role == 'teacher')
 <x-teacher-master/>
-@elseif($user->role == 'student')
+@elseif(auth()->user()->role == 'student')
 <x-student-master/>
 @endif
 

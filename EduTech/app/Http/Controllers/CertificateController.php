@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Enroll;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 class CertificateController extends Controller
 {
@@ -34,9 +34,25 @@ class CertificateController extends Controller
             return '<img src="'.$enroll->course->image.'" border="0" width="100" class="img-rounded" align="center" />';
           })
           ->addColumn('uploadCertificateButton', function ($enroll) {
-            return view('teacher.uploadCertificateButton',['payment'=>$enroll]);
+            return view('teacher.uploadCertificateButton',['enroll'=>$enroll]);
         })
           ->rawColumns(['profile','image','uploadCertificateButton'])
           ->make(true);
     }
+
+    public function store(Request $request)
+    {
+         if (request()->hasFile('certificate')) {
+            $certificateFile = request()->file('certificate');
+            $certificateFileName = $certificateFile->getClientOriginalName();
+            $path = $certificateFile->store('public/certificate_files');
+            $certificateFileName = basename($path);
+            // dd($certificateFileName);
+            $enroll = Enroll::findOrFail($request->enroll);
+            $enroll->update(["certificate"=>$certificateFileName,"status"=>"accepted"]);
+            return redirect(route('teacher.certificateRequests'))->with('success','Certificate uploaded successfully');
+            // dd($request->enroll);
+         }
+    }
 }
+

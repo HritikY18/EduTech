@@ -83,13 +83,12 @@ class PaymentController extends Controller
         $action = $request->query('action'); 
         if ($action === 'accept') {
             $payment->update(['payment_status'=>'approved']);
-            return redirect(route('teacher.index'))->with('success','Payment Request approved');
+            return redirect(route('teacher.paymentRequests'))->with('success','Payment Request approved');
         } 
         elseif ($action === 'decline') {
             $payment->update(['payment_status'=>'declined']);
-            return redirect(route('teacher.index'))->with('danger','Payment Request declined');
+            return redirect(route('teacher.paymentRequests'))->with('danger','Payment Request declined');
         }
-
     }
 
     /**

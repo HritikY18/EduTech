@@ -5,7 +5,7 @@
 @endif --}}
 
 {{-- <x-teacher-master> --}}
-     
+
 @section('content')
 
 
@@ -24,17 +24,27 @@
                             <div class="input-group">
                                 <span class="input-group-text">Name and Surname</span>
                                 <input type="text" name='name' aria-label="First name" class="form-control" value={{ $user->name }} required>
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                                 <input type="text" name='surname' aria-label="Last name" class="form-control" value={{ $user->surname }} required>
+                                @error('surname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                               </div>
                         </div>
 
-                       
+
 
                         {{-- profile --}}
                             <div class="text-center">
                                 <img src="{{ $user->profile }}" alt="" height="120px" class="rounded" >
                             </div>
-                                
+
                             <div class="row mb-3">
                                 <label for="profile" class="col-md-4 col-form-label text-md-end">{{ __('Profile') }}</label>
                                 <div class="col-md-6">
@@ -47,7 +57,7 @@
                                     @enderror
                                 </div>
                             </div>
-                       
+
 
                         {{-- phone --}}
                         <div class="row mb-3">
@@ -64,16 +74,21 @@
                             </div>
                         </div>
 
-                    
 
-                      
+
+
 
                         {{-- dob --}}
                         <div class="row mb-3">
                             <label for="dob" class="col-md-4 col-form-label text-md-end">{{ __('DOB') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dob" type="date" class="form-control" name="dob" value={{ $user->dob }} >
+                                <input id="dob" type="date" class="form-control  @error('dob') is-invalid @enderror" name="dob" value={{ $user->dob }} placeholder="DOB" required autocomplete="dob" >
+                                @error('dob')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 

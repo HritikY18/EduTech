@@ -94,10 +94,16 @@ class EnrollController extends Controller
         }
         else{
             $enroll->update(['progress'=>$request->progress]);
-            return redirect(route('student.index'))->with('success',"Course progress updated to $request->progress");
+            return redirect(route('student.index'))->with('success',"Course progress updated to $request->progress%");
         }
     }
 
+    public function rating(Request $request)
+    {
+        $enroll = Enroll::findOrFail($request->enroll);
+        $enroll->update(['rating'=>$request->rating]);
+        return redirect(route('student.index',"Rating updated successfully!"));
+    } 
     /**
      * Remove the specified resource from storage.
      *

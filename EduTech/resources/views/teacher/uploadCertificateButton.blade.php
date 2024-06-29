@@ -1,1 +1,1 @@
-<a href="{{route('teacher.index')}}" class="btn btn-primary btn-sm">Upload</a>
+<input type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"   value="upload" onclick="return buttonClick('{{$enroll->id}}')" >

@@ -32,6 +32,14 @@
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
+    {{-- upload certificate model script --}}
+     <script>
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () { myInput.focus()})
+   </script>
+
 </head>
 
 <body id="page-top">
@@ -115,11 +123,22 @@
             <hr class="sidebar-divider">
 
 
-            <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#profile"
+                    aria-expanded="true" aria-controls="profile">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Profile</span>
+                    
+                </a>
+                <div id="profile" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Options:</h6>
+                        <a class="collapse-item" href="{{ route('user.show',auth()->user()) }}">View Profile</a>
+                        <a class="collapse-item" href="{{ route('user.edit',auth()->user()) }}">Edit Password</a>
+                        <a class="collapse-item" href="{{route('user.changePassword',auth()->user())}}">Change Password</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->

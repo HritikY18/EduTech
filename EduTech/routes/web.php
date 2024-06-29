@@ -15,39 +15,41 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // user
-Route::prefix('user')->name('user.')->group(function () {
-    // Route::resource('/',UserController::class);
-    Route::get('/{user}/changePassword/',[UserController::class,'changePassword'])->name('changePassword');
-    Route::patch('/{user}/changePasswordStore/',[UserController::class,'changePasswordStore'])->name('changePasswordStore');
+Route::prefix('user/')->name('user.')->group(function () {
+    Route::get('change-password',[UserController::class,'changePassword'])->name('changePassword');
+    Route::patch('change-password',[UserController::class,'changePasswordStore'])->name('changePasswordStore');
 });
 Route::resource('user',UserController::class);
 
 
 
-// teacher 
+// teacher
 Route::prefix('teacher/')->name('teacher.')->group(function () {
     // Route::resource('/',TeacherController::class);
-    Route::get('getCourses',[TeacherController::class,'getCourses'])->name('getCourses');
+    Route::get('get-courses',[TeacherController::class,'getCourses'])->name('getCourses');
     Route::get('enroll/{id}',[TeacherController::class,'enroll'])->name('enroll');
-    Route::get('courseStudents/{id}',[TeacherController::class,'getCourseStudents'])->name('getCourseStudents');
+    Route::get('course-students/{id}',[TeacherController::class,'getCourseStudents'])->name('getCourseStudents');
     Route::get('comments/{id}',[TeacherController::class,'comments'])->name('comments');
-    Route::get('paymentRequests',[TeacherController::class,'paymentRequests'])->name('paymentRequests');
-    Route::get('getPaymentRequests',[TeacherController::class,'getPaymentRequests'])->name('getPaymentRequests');
-    Route::get('certificateRequests',[CertificateController::class,'certificateRequests'])->name('certificateRequests');
-    Route::get('getCertificateRequests',[CertificateController::class,'getCertificateRequests'])->name('getCertificateRequests');
+    Route::get('payment-requests',[TeacherController::class,'paymentRequests'])->name('paymentRequests');
+    Route::get('get-payment-requests',[TeacherController::class,'getPaymentRequests'])->name('getPaymentRequests');
+    Route::get('certificate-requests',[CertificateController::class,'certificateRequests'])->name('certificateRequests');
+    Route::get('get-certificate-requests',[CertificateController::class,'getCertificateRequests'])->name('getCertificateRequests');
+    Route::patch('certificate-store',[CertificateController::class,'store'])->name('certificateStore');
 });
 Route::resource('teacher',TeacherController::class);
 
 // student
 Route::prefix('student/')->name('student.')->group(function () {
     // Route::resource('/',StudentController::class);
-    Route::get('getCourses',[StudentController::class,'getCourses'])->name('getCourses');
+    Route::get('get-courses',[StudentController::class,'getCourses'])->name('getCourses');
     Route::get('coursemates/{id}',[StudentController::class,'getCoursemates'])->name('getCoursemates');
-    Route::get('applyForCertificate/{enroll}',[CertificateController::class,'applyForCertificate'])->name('applyForCertificate');
+    Route::get('apply-for-certificate/{enroll}',[CertificateController::class,'applyForCertificate'])->name('applyForCertificate');
+    Route::patch('rating',[EnrollController::class,'rating'])->name('rating');
 });
 Route::get('/temp',[StudentController::class,'temp'])->name('temp');
 Route::resource('student',StudentController::class);

@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon; 
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -58,12 +58,20 @@ class RegisterController extends Controller
             'phone' => ['required', 'string', 'max:10','min:10', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'gender' =>['required','string'],
-            'dob' =>['required','date'],
+            'dob' =>[
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    if ((Carbon::parse($value)->diff(Carbon::now())->y)<18) {
+                        $fail('Your age is less than 18');
+                    }
+                },
+            ],
             'address' => ['required', 'string', 'max:255'],
         ]);
     }
 
-    
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -86,7 +94,7 @@ class RegisterController extends Controller
         // if (request()->hasFile('profile')) {
         //     $profileImagePath = request()->file('profile')->store('public/profile_images');
             // $profileImagePath = str_replace('public/', 'storage/', $profileImagePath);
- 
+
         // }
 
     //     $profileImageName = null;
@@ -99,9 +107,9 @@ class RegisterController extends Controller
         $profileImage = request()->file('profile');
         $profileImageName = $profileImage->getClientOriginalName();
         $path = $profileImage->store('public/profile_images');
-        $profileImageName = basename($path); 
+        $profileImageName = basename($path);
     }
-        return User::create([   
+        return User::create([
             'role' => $data['role'],
             'name' => $data['name'],
             'surname' => $data['surname'],

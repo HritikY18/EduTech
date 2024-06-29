@@ -11,7 +11,7 @@ if($payment_status)
 ?>
 
 @if($payment_status=='approved' && $enroll->status=='accepted' )
-<a href="{{route('student.index')}}" class="btn btn-outline-primary">Download</a>
+ <a href="{{ $enroll->certificate }}" class="btn btn-outline-primary"  download>download</a>
 
 @elseif($payment_status=='approved' && $enroll->status=='requested')
 <a href="{{route('student.index')}}" class="btn btn-outline-info">Requested</a>
@@ -34,7 +34,8 @@ if($payment_status)
 <a href="{{route('comment.create',$course->id)}}" class="btn btn-secondary btn-sm">Comment</a>
 
 @if($payment_status=='approved' && $enroll->status=='accepted' && $enroll->rating == null)
-<a href="{{route('student.index')}}" class="btn btn-warning btn-sm">Rating</a>
+<input type="submit" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"   value="Rating" onclick="return buttonClick('{{$enroll->id}}')" >
+
 @elseif($payment_status=='approved' && $enroll->status=='accepted' && $enroll->rating)
-<a class="btn btn-warning btn-sm">{{ $enroll->rating }}</a>
+<a class="btn btn-warning btn-sm">{{$enroll->rating}}&#9734;
 @endif

@@ -43,6 +43,17 @@
     @section('content')
     <div class="container">
         <div class="row justify-content-center">
+            @if (session('danger'))
+            <div class = "alert alert-danger">
+                {{ session('danger') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
             <div class="card">
                 <div class="card-header">{{ __('Comments') }}</div>
 

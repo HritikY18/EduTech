@@ -106,14 +106,13 @@ class UserController extends Controller
         return redirect(route("$user->role.index"))->with('success',"Profile Upadated Successfully!");
     }
 
-    public function changePassword($id)
+    public function changePassword()
     {
-        $user = User::findOrFail($id);
-        return view('user.changePassword',['user'=>$user]);
+        return view('user.changePassword');
     }
-    public function changePasswordStore(ChangePasswordRequest $request,$id)
+    public function changePasswordStore(ChangePasswordRequest $request)
     {
-        $user = User::findOrFail($id);
+        $user = auth()->user();
         if (Hash::check($request->currentPassword, $user->password))  {
                     $user->password = Hash::make($request->input('password'));
                     $user->save();
